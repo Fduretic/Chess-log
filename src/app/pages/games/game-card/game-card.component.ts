@@ -1,9 +1,10 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {ChessGame, ChessGameComment} from '../../../../assets/chess-log.model';
+import { Component, Input, OnInit } from '@angular/core';
+import { ChessGame, ChessGameComment } from '../../../../assets/chess-log.model';
 import * as uuid from 'uuid';
-import {GamesService} from '../../../services/games.service';
-import {UsersService} from '../../../services/users.service';
-import {AngularFireStorage} from '@angular/fire/storage';
+import { GamesService } from '../../../services/games.service';
+import { UsersService } from '../../../services/users.service';
+import { AngularFireStorage } from '@angular/fire/storage';
+import { VoiceRecognitionService } from 'src/app/services/voice-recognition.service';
 
 @Component({
   selector: 'app-game-card',
@@ -21,13 +22,30 @@ export class GameCardComponent implements OnInit {
   public submittingPhoto: boolean;
   public submittingComment: boolean;
 
+  private listening: boolean = false;
+  private voiceRecognition: VoiceRecognitionService;
+
   constructor(private gamesService: GamesService,
-              private storage: AngularFireStorage,
-              private usersService: UsersService) {
+    private storage: AngularFireStorage,
+    private usersService: UsersService) {
     this.initComment();
+    this.voiceRecognition = new VoiceRecognitionService();
   }
 
   ngOnInit(): void {
+  }
+
+
+  public useMic() {
+    this.listening = !this.listening;
+    if (this.listening) {
+      console.log("mic is being used");
+      this.voiceRecognition.init();
+      this.voiceRecognition.start();
+      return;
+    }
+    console.log("mic stopped!");
+    this.voiceRecognition.stop();
   }
 
   public toggleFavorite(): void {
@@ -81,9 +99,9 @@ export class GameCardComponent implements OnInit {
       (error) => {
         console.log('ERROR ', error);
       }).finally(
-      () => {
-        this.submittingComment = false;
-      });
+        () => {
+          this.submittingComment = false;
+        });
   }
 
   private initComment(): void {

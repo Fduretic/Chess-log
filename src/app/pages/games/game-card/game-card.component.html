@@ -1,7 +1,7 @@
 <div class="game-card">
   <div class="participant-1">
     <img class="profile-picture mr-2"
-         [ngStyle]="{background: game.participant1.photoURL ? 'url(' + game.participant1.photoURL + ') no-repeat center' : ''}">
+      [ngStyle]="{background: game.participant1.photoURL ? 'url(' + game.participant1.photoURL + ') no-repeat center' : ''}">
     <div class="player-indicator flex-center column">
       <div class="status-icon">
         <mat-icon class="text-success" *ngIf="game.result === 1">check_circle</mat-icon>
@@ -25,8 +25,7 @@
       <span class="player-name">{{game.participant2.displayName}}</span>
       <div class="player-color"></div>
     </div>
-    <img class="profile-picture"
-         [ngStyle]="{
+    <img class="profile-picture" [ngStyle]="{
       background: game.participant2.photoURL ? 'url(' + game.participant2.photoURL + ') no-repeat center' : ''}">
   </div>
 </div>
@@ -62,15 +61,11 @@
         <form class="example-form">
           <mat-form-field class="example-full-width">
             <mat-label>New Comment:</mat-label>
-            <input matInput
-                   value=""
-                   autocomplete="off"
-                   name="newComment.content"
-                   [(ngModel)]="newComment.content">
+            <input matInput value="" autocomplete="off" name="newComment.content" [(ngModel)]="newComment.content">
           </mat-form-field>
-          <mat-icon (click)="addPhoto()"
-                    class="ml-2"
-                    *ngIf="!newComment.imageUrl && !submittingPhoto">add_a_photo
+          <mat-icon (click)="addPhoto()" class="ml-2" *ngIf="!newComment.imageUrl && !submittingPhoto">add_a_photo
+          </mat-icon>
+          <mat-icon (click)="useMic()" class="ml-2">mic
           </mat-icon>
           <div *ngIf="newComment.imageUrl && !submittingPhoto">
             <mat-icon class="ml-2">photo
@@ -79,14 +74,14 @@
             </mat-icon>
           </div>
           <span *ngIf="submittingPhoto">
-          <i class="fa fa-duotone fa-spinner fa-spin"></i>
-        </span>
+            <i class="fa fa-duotone fa-spinner fa-spin"></i>
+          </span>
         </form>
       </div>
 
       <button class="btn ml-2 mt-3 btn-primary btn-block"
-              [disabled]="submittingPhoto || submittingComment || (!newComment.content && !newComment.imageUrl)"
-              (click)="submitComment()">
+        [disabled]="submittingPhoto || submittingComment || (!newComment.content && !newComment.imageUrl)"
+        (click)="submitComment()">
         <span *ngIf="!submittingComment">Comment</span>
         <span *ngIf="submittingComment">
           <i class="fa fa-duotone fa-spinner fa-spin"></i>
@@ -94,19 +89,16 @@
       </button>
     </div>
     <div class="comments-footer">
-      <div class="comment-wrapper p-2 mb-2"
-           *ngFor="let comment of game.comments">
+      <div class="comment-wrapper p-2 mb-2" *ngFor="let comment of game.comments">
         <div class="comment-header">
           <img class="profile-picture"
-               [ngStyle]="{background: 'url(' + comment.creator.photoURL + ') no-repeat center'}">
+            [ngStyle]="{background: 'url(' + comment.creator.photoURL + ') no-repeat center'}">
           <span class="ml-2">{{comment.creator.displayName}}</span>
         </div>
         <div class="comment-body my-2">
           <span>{{comment.content}}</span>
           <a [href]="comment.imageUrl" target="_blank">
-            <img class="my-2 comment-image"
-                 *ngIf="comment.imageUrl"
-                 [src]="comment.imageUrl">
+            <img class="my-2 comment-image" *ngIf="comment.imageUrl" [src]="comment.imageUrl">
           </a>
         </div>
         <div class="comment-footer text-muted">

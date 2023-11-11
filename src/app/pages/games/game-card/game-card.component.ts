@@ -30,6 +30,12 @@ export class GameCardComponent implements OnInit {
     private usersService: UsersService) {
     this.initComment();
     this.voiceRecognition = new VoiceRecognitionService();
+    this.voiceRecognition.transcript_arr.subscribe((value) => {
+      if (!value) {
+        return;
+      }
+      this.newComment.content = value;
+    });
   }
 
   ngOnInit(): void {

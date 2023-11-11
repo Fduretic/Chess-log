@@ -1,0 +1,8 @@
+<div class="buttons">
+  <div class="button flex-center"
+       *ngFor="let button of buttons"
+       [routerLink]="button.routerLink">
+    <i [class]="'mt-3 ' + button.iconClass"></i>
+    <p class="button-label">{{button.label}}</p>
+  </div>
+</div>

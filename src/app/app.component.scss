@@ -1,0 +1,40 @@
+.app-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  padding-bottom: 50px;
+
+  .content {
+    height: 100%;
+    margin: 15px;
+    overflow: scroll;
+  }
+}
+
+.footer-action {
+  flex: 1;
+}
+
+.nav-footer {
+  width: 100%;
+  height: 50px;
+  background-color: #313233;
+  position: absolute;
+  bottom: 0;
+
+  .active-shortcut {
+    background-color: #ffffff12;
+  }
+}
+
+::ng-deep .snack-success {
+  background-color: rgb(9, 143, 9);
+  color: white;
+}
+
+::ng-deep .snack-error {
+  background-color: rgb(188, 43, 57);
+  color: white;
+}

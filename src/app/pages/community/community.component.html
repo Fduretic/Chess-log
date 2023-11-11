@@ -1,0 +1,64 @@
+<div class="community-wrapper">
+  <div class="users-list" *ngIf="userDetails.length">
+    <div class="user-card" *ngFor="let details of userDetails">
+      <div class="user-card-header">
+        <div class="header-left">
+          <img class="profile-picture"
+               [ngStyle]="{background: 'url(' + details.user.photoURL + ') no-repeat center'}">
+          <span class="ml-3 flex-center">{{details.user.displayName}}</span>
+        </div>
+        <div class="header-right">
+          <!--          <button class="btn btn btn-outline-info">-->
+          <!--            Compare-->
+          <!--          </button>-->
+        </div>
+
+      </div>
+      <div class="user-card-body container">
+        <div class="col">
+          <div class="row">
+            <p>
+              <span class="font-weight-bold mr-2">total games:</span>
+              <span>{{details.details.total}}</span>
+            </p>
+          </div>
+          <div class="row">
+            <p>
+              <span class="font-weight-bold mr-2">won:</span>
+              <span class="text-success">{{details.details.won}}</span>
+            </p>
+          </div>
+          <div class="row">
+            <p>
+              <span class="font-weight-bold mr-2">stalemate:</span>
+              <span class="text-info">{{details.details.stalemate}}</span>
+            </p>
+          </div>
+          <div class="row">
+            <p>
+              <span class="font-weight-bold mr-2">lost:</span>
+              <span class="text-danger">{{details.details.lost}}</span>
+            </p>
+          </div>
+          <div class="row">
+            <p>
+              <span class="font-weight-bold mr-2">played white:</span>
+              <span>{{details.details.playedWhite}}</span>
+            </p>
+          </div>
+          <div class="row">
+            <p>
+              <span class="font-weight-bold mr-2">played black:</span>
+              <span>{{details.details.playedBlack}}</span>
+            </p>
+            <button class="btn btn-outline-info"
+                    (click)="openH2H(details.user)"
+                    *ngIf="details.user.userId !== myUser.userId">
+              Head To Head
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

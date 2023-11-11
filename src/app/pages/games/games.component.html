@@ -1,0 +1,208 @@
+<div class="games-wrapper" *ngIf="!selectedGame">
+  <div class="games-header mb-3"
+       *ngIf="allGames.length">
+    <div class="element-wrapper mb-2">
+      <mat-label>Filter:</mat-label>
+      <mat-button-toggle-group
+        name="fontStyle"
+        aria-label="Font Style">
+        <mat-button-toggle [checked]="isFilterActive('all')"
+                           (change)="selectFilter('all')">
+          All Games
+        </mat-button-toggle>
+        <mat-button-toggle
+          [checked]="isFilterActive('favorites')"
+          (change)="selectFilter('favorites')">
+          Favorites
+        </mat-button-toggle>
+        <mat-button-toggle
+          [checked]="isFilterActive('h2h')"
+          (change)="selectFilter('h2h')">
+          Head to Head
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+
+    <div class="dropdown show mb-3" *ngIf="!isFilterActive('favorites')">
+      <p>Tournament:</p>
+      <a class="btn btn-block btn-info dropdown-toggle"
+         role="button"
+         id="dropdownMenuLink"
+         data-toggle="dropdown"
+         aria-haspopup="true"
+         aria-expanded="false">
+        {{selectedTournament ? selectedTournament.name : 'All'}}
+      </a>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+        <a class="dropdown-item" (click)="filterGamesByTournament('')">
+          <span>{{'All'}}</span>
+        </a>
+        <a class="dropdown-item"
+           (click)="filterGamesByTournament(tournament.id)"
+           *ngFor="let tournament of allTournaments">
+          <span>{{tournament.name}}</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="mt-3" *ngIf="activeFilter === 'h2h'">
+      <div class="head-to-head-filter" *ngIf="allUsers?.length">
+        <div class="btn-group">
+          <button type="button"
+                  class="btn btn-info btn-block btn-black dropdown-toggle"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                  data-toggle="dropdown">
+            <span>{{userSlot1?.user?.displayName ? userSlot1.user.displayName : 'Player 1'}}</span>
+          </button>
+
+          <!--      Lista dostupnih igrača-->
+          <div *ngIf="allUsers.length"
+               class="dropdown-menu">
+            <a class="dropdown-item"
+               *ngFor="let availableUser of availableUsers"
+               (click)="selectUser(1, availableUser)">
+              <span>{{availableUser?.displayName}}</span>
+            </a>
+            <a class="dropdown-item"
+               *ngIf="userSlot1"
+               (click)="selectUser(1, null)">
+              <span>Deselect</span>
+            </a>
+          </div>
+        </div>
+
+        <span class="flex-center mx-2">VS</span>
+
+        <div class="btn-group">
+          <button type="button"
+                  class="btn btn-block btn-info btn-black dropdown-toggle"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                  data-toggle="dropdown">
+            <span>{{userSlot2?.user?.displayName ? userSlot2.user.displayName : 'Player 2'}}</span>
+          </button>
+
+          <!--      Lista dostupnih igrača-->
+          <div *ngIf="allUsers.length" class="dropdown-menu">
+            <a class="dropdown-item"
+               *ngFor="let availableUser of availableUsers"
+               (click)="selectUser(2, availableUser)">
+              <span>{{availableUser.displayName}}</span>
+            </a>
+            <a class="dropdown-item"
+               *ngIf="userSlot2"
+               (click)="selectUser(2, null)">
+              <span>Deselect</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn btn-outline-info mt-3 w-100"
+              [disabled]="!userSlot1?.user?.userId || !userSlot2?.user?.userId"
+              (click)="filterH2HGames(userSlot1?.user?.userId, userSlot2?.user?.userId)">
+        <span>Compare</span>
+      </button>
+
+      <button class="btn btn-outline-warning mt-3 w-100"
+              (click)="clearH2HFilter()">
+        <span>Clear Filter</span>
+      </button>
+
+      <div class="scoreboard mt-3"
+           *ngIf="displayH2HDetails">
+        <div class="container">
+          <div class="col">
+            <div class="row">
+              <p class="font-weight-bold mr-2">total games: </p>
+              <p>{{userSlot1.details.total}}</p>
+            </div>
+            <div class="row">
+              <p class="font-weight-bold mr-2">{{userSlot1.user?.displayName + ' ' + 'won:'}} </p>
+              <p>{{userSlot1.details.won}}</p>
+            </div>
+            <div class="row">
+              <p class="font-weight-bold mr-2">{{userSlot2.user?.displayName + ' ' + 'won:'}} </p>
+              <p>{{userSlot2.details.won}}</p>
+            </div>
+            <div class="row">
+              <p class="font-weight-bold mr-2">stalemates:</p>
+              <p>{{userSlot1.details.stalemate}}</p>
+            </div>
+            <div class="row">
+              <p class="font-weight-bold mr-2">{{userSlot1.user?.displayName + ' ' + 'played white:'}} </p>
+              <p>{{userSlot1.details.playedWhite}}</p>
+            </div>
+            <div class="row">
+              <p class="font-weight-bold mr-2">{{userSlot2.user?.displayName + ' ' + 'played white:'}} </p>
+              <p>{{userSlot2.details.playedWhite}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dropdown show my-3">
+      <p>Export JSON (games below):</p>
+
+      <button [disabled]="!filteredGames?.length"
+              (click)="exportJSON()"
+              class="w-100 btn btn-primary">
+        Export JSON
+      </button>
+    </div>
+  </div>
+
+  <div class="games-scroll">
+    <div class="game-card mb-2"
+         *ngFor="let game of filteredGames"
+         (click)="viewDetails(game)">
+      <div class="game-card-header">
+        <div class="date-of-game">
+          {{game.dateTimePlayed | date: 'dd.MM.yyyy.'}}
+        </div>
+        <div class="mx-1 comments flex-center">
+          <mat-icon
+            class="mx-1 text-warning"
+            *ngIf="isGameFavorite(game.gameId)">star
+          </mat-icon>
+          <span *ngIf="game.note" class="fa fa-solid fa-tag mx-1"></span>
+          <span class="fa fa-solid fa-comments mx-1"></span>
+          <span class="mx-1">{{game.comments?.length}}</span>
+        </div>
+      </div>
+      <div class="game-card-body">
+        <app-game-card [game]="game"
+                       [isFavorite]="isGameFavorite(game.gameId)"
+                       [displayDetails]="false">
+        </app-game-card>
+      </div>
+    </div>
+
+    <p class="flex-center"
+       *ngIf="!filteredGames?.length">
+      There are no games
+    </p>
+  </div>
+</div>
+
+<div class="games-wrapper" *ngIf="selectedGame">
+  <app-game-card [game]="selectedGame"
+                 [isFavorite]="isGameFavorite(selectedGame.gameId)"
+                 [displayDetails]="true">
+  </app-game-card>
+
+  <button class="btn btn-outline-info mt-3"
+          (click)="closeGamePreview()">
+    <span>Back to all games</span>
+  </button>
+
+  <button class="btn btn-outline-danger mt-3"
+          (click)="initiateGameDeletion()"
+          *ngIf="selectedGame.authorId === user?.uid">
+    <span *ngIf="!deletingGame">Delete Game</span>
+    <span *ngIf="deletingGame">
+      {{'Cancel (' + secBeforeDeletion + ')'}}</span>
+  </button>
+</div>

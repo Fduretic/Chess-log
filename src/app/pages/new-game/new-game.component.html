@@ -1,0 +1,141 @@
+<div class="new-game-wrapper">
+  <div class="new-game-header">
+    <div class="players">
+      <div class="player-1">
+        <div class="profile-picture"
+             [ngStyle]="{
+      background: userSlot1?.photoURL ? 'url(' + userSlot1.photoURL + ') no-repeat center' : ''
+    }">
+        </div>
+        <div class="btn-group" *ngIf="allUsers?.length">
+          <button type="button"
+                  class="btn btn-block btn-white dropdown-toggle"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                  data-toggle="dropdown">
+            <span>{{userSlot1?.displayName ? userSlot1.displayName : 'Player 1'}}</span>
+          </button>
+          <div *ngIf="allUsers?.length" class="dropdown-menu">
+            <a class="dropdown-item"
+               *ngFor="let availableUser of availableUsers"
+               (click)="selectUser(1, availableUser)">
+              <span>{{availableUser.displayName}}</span>
+            </a>
+            <a class="dropdown-item"
+               *ngIf="userSlot1"
+               (click)="selectUser(1, null)">
+              <span>Deselect</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="mx-3 flex-center">
+        <span>VS</span>
+      </div>
+
+      <div class="player-2">
+        <div class="profile-picture"
+             [ngStyle]="{background: userSlot2?.photoURL ? 'url(' + userSlot2.photoURL + ') no-repeat center' : ''}">
+        </div>
+
+        <div class="btn-group" *ngIf="allUsers?.length">
+          <button type="button"
+                  class="btn btn-block btn-black dropdown-toggle"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                  data-toggle="dropdown">
+            <span>{{userSlot2?.displayName ? userSlot2.displayName : 'Player 2'}}</span>
+          </button>
+
+          <!--      Lista dostupnih igrača-->
+          <div *ngIf="allUsers.length" class="dropdown-menu">
+            <a class="dropdown-item"
+               *ngFor="let availableUser of availableUsers"
+               (click)="selectUser(2, availableUser)">
+              <span>{{availableUser.displayName}}</span>
+            </a>
+            <a class="dropdown-item"
+               *ngIf="userSlot2"
+               (click)="selectUser(2, null)">
+              <span>Deselect</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="new-game-body my-3">
+
+    <div class="element-wrapper">
+      <mat-label>Date played:</mat-label>
+      <mat-form-field appearance="fill">
+        <mat-label>Choose a date</mat-label>
+        <input matInput
+               [(ngModel)]="dateTimePlayed"
+               [matDatepicker]="picker">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Select Tournament</mat-label>
+      <mat-select multiple
+                  (selectionChange)="selectTournaments($event.value)">
+        <mat-option *ngFor="let tournament of tournaments"
+                    [value]="tournament.id">
+          <span>{{tournament.name}}</span>
+          <span class="ml-1"
+                *ngIf="isTournamentDisabled(tournament.startDateTime)">{{'(' + (tournament.startDateTime | date: 'dd.MM.yyyy. HH:mm') + ')'}}</span>
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div class="element-wrapper">
+      <mat-label>Final result:</mat-label>
+      <mat-button-toggle-group
+        name="fontStyle"
+        aria-label="Font Style"
+        [disabled]="!userSlot1?.userId || !userSlot2?.userId">
+        <mat-button-toggle [checked]=isResult(1)
+                           (change)="resultChanged(1)">
+          {{userSlot1?.displayName ? userSlot1.displayName : 'Player 1'}}
+        </mat-button-toggle>
+        <mat-button-toggle
+          [checked]=isResult(0)
+          (change)="resultChanged(0)">
+          Stalemate
+        </mat-button-toggle>
+        <mat-button-toggle
+          [checked]=isResult(2)
+          (change)="resultChanged(2)">
+          {{userSlot2?.displayName ? userSlot2.displayName : 'Player 2'}}
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+
+    <div class="element-wrapper">
+      <form class="example-form">
+        <mat-form-field class="example-full-width">
+          <mat-label>Note (optional):</mat-label>
+          <input matInput
+                 autocomplete="off"
+                 value=""
+                 name="currentGame.note"
+                 [(ngModel)]="currentGame.note">
+        </mat-form-field>
+      </form>
+    </div>
+
+    <button class="btn mt-3 btn-primary btn-block"
+            (click)="submitGame()"
+            [disabled]="isSubmitDisabled()">
+      <span *ngIf="!submitting">Submit</span>
+      <span *ngIf="submitting"
+            class="fa fa-spin fa-duotone fa-spinner">
+      </span>
+    </button>
+  </div>
+</div>

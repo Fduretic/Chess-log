@@ -1,0 +1,39 @@
+.users-list {
+  .user-card {
+    margin-bottom: 10px;
+    background-color: #8f8f8f4d;
+    border-radius: 5px 5px 0 0;
+
+    .user-card-body {
+      padding: 10px;
+
+      .row {
+        justify-content: space-between;
+      }
+    }
+
+    .user-card-header {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      background: #113f43;
+      padding: 10px;
+      border-radius: 5px 5px 0 0;
+
+      .header-left {
+        display: flex;
+      }
+
+      .header-right {
+      }
+
+      .profile-picture {
+        height: 45px;
+        width: 45px;
+        border-radius: 50%;
+        border: 1px solid;
+        background-size: cover !important;
+      }
+    }
+  }
+}

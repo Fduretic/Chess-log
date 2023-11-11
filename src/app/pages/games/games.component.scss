@@ -1,0 +1,45 @@
+.games-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+  .games-header {
+    border-bottom: 1px solid #ffffff50;
+
+    .head-to-head-filter {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .scoreboard {
+      padding: 10px;
+
+      .row {
+        justify-content: space-between;
+      }
+    }
+  }
+
+  .game-card {
+    display: flex;
+    flex-direction: column;
+
+    .game-card-header {
+      display: flex;
+      background: #113f43;
+      padding: 10px;
+      border-radius: 5px 5px 0 0;
+
+      .date-of-game {
+        flex: 8;
+      }
+
+      .comments {
+        flex: 2;
+      }
+    }
+
+    .game-card-body {
+    }
+  }
+}

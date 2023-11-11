@@ -1,0 +1,17 @@
+.my-profile-header {
+  border-bottom: 1px solid white;
+
+  .profile-picture {
+    height: 160px;
+    width: 160px;
+    border-radius: 50%;
+    border: 1px solid;
+    background-size: cover !important;
+  }
+}
+
+.my-profile-footer {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}

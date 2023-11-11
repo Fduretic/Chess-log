@@ -1,0 +1,194 @@
+<div class="tournaments-wrapper">
+  <div class="tournaments-header mb-3">
+    <div class="selector">
+      <!--        <mat-label>Filter:</mat-label>-->
+      <mat-button-toggle-group
+        name="fontStyle"
+        aria-label="Font Style">
+        <mat-button-toggle [checked]="isTabActive('all')"
+                           (change)="selectTab('all')">
+          All Tournaments
+        </mat-button-toggle>
+        <mat-button-toggle [checked]="isTabActive('new')"
+                           (change)="selectTab('new')">
+          New Tournament
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+  </div>
+
+  <div class="tournaments body my-3"
+       *ngIf="isTabActive('all')">
+    <p class="flex-center"
+       *ngIf="!allTournaments?.length">
+      There are no tournaments
+    </p>
+
+    <div class="tournament-cards" *ngIf="allTournaments?.length">
+      <div class="tournament-card mb-2"
+           *ngFor="let tournament of allTournaments">
+        <div class="tournament-card-header">
+          <div class="tournament-name">
+            {{tournament.name}}
+          </div>
+          <div class="mx-1 comments flex-center">
+<!--            <span class="fa fa-solid fa-comments mx-1"></span>-->
+<!--            <span class="mx-1">{{tournament.comments.length}}</span>-->
+          </div>
+        </div>
+
+        <div class="tournament-card-body">
+          <div class="container">
+            <div class="col">
+              <div class="row">
+                <p class="font-weight-bold mr-2">description:</p>
+                <p>{{tournament.description}}</p>
+              </div>
+              <div class="row">
+                <p class="font-weight-bold mr-2">start date:</p>
+                <p>{{tournament.startDateTime | date: 'dd.MM.yyyy.'}}</p>
+              </div>
+              <div class="row">
+                <p class="font-weight-bold mr-2">end date:</p>
+                <p>{{tournament.endDateTime | date: 'dd.MM.yyyy.'}}</p>
+              </div>
+              <div class="row">
+                <p class="font-weight-bold mr-2">location:</p>
+                <p>{{tournament.location.name}}</p>
+              </div>
+              <div class="row">
+                <p class="font-weight-bold mr-2">total games:</p>
+                <p>{{tournament.gamesPlayed}}</p>
+              </div>
+              <div class="row">
+                <p class="font-weight-bold mr-2">status:</p>
+                <p>In Progress</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="tournaments body my-3"
+       *ngIf="isTabActive('new')">
+
+    <div class="element-wrapper mb-2">
+      <form class="example-form">
+        <mat-form-field class="example-full-width">
+          <mat-label>Tournament name:</mat-label>
+          <input matInput
+                 autocomplete="off"
+                 value=""
+                 [(ngModel)]="newTournament.name"
+                 name="currentGame.note">
+        </mat-form-field>
+      </form>
+    </div>
+
+    <div class="element-wrapper mb-2">
+      <form class="example-form">
+        <mat-form-field class="example-full-width">
+          <mat-label>Tournament description:</mat-label>
+          <input matInput
+                 autocomplete="off"
+                 value=""
+                 [(ngModel)]="newTournament.description"
+                 name="currentGame.note">
+        </mat-form-field>
+      </form>
+    </div>
+
+    <div class="element-wrapper mb-2">
+      <p>Select Location</p>
+      <div class="btn-group" *ngIf="locations.length">
+        <button type="button"
+                class="btn btn-block btn-info btn-black dropdown-toggle"
+                aria-haspopup="true"
+                aria-expanded="false"
+                data-toggle="dropdown">
+          <span>{{newTournament?.location?.name ? newTournament.location.name : 'Location'}}</span>
+        </button>
+
+        <div
+          class="dropdown-menu">
+          <a class="dropdown-item"
+             *ngFor="let location of locations"
+             (click)="selectLocation(location)">
+            <span>{{location.name}}</span>
+          </a>
+          <a class="dropdown-item"
+             (click)="enterNewLocation()">
+            <span>New Location</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="new-location"
+           *ngIf="!locations?.length || enteringNewLocation">
+        <div class="element-wrapper mb-2">
+          <form class="example-form">
+            <mat-form-field class="example-full-width">
+              <mat-label>Location name:</mat-label>
+              <input matInput
+                     autocomplete="off"
+                     value=""
+                     [(ngModel)]="newLocationName"
+                     name="currentGame.note">
+            </mat-form-field>
+
+            <button class="btn mt-3 btn-primary btn-block"
+                    (click)="addLocation()"
+                    [disabled]="!newLocationName">
+              <span *ngIf="!submittingNewLocation">Add Location</span>
+              <span *ngIf="submittingNewLocation"
+                    class="fa fa-spin fa-duotone fa-spinner">
+      </span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="element-wrapper">
+      <mat-label>Start date:</mat-label>
+      <mat-form-field appearance="fill">
+        <mat-label>Choose a date</mat-label>
+        <input matInput
+               [(ngModel)]="startDate"
+               [matDatepicker]="pickerStart">
+        <mat-datepicker-toggle matSuffix
+                               [for]="pickerStart">
+        </mat-datepicker-toggle>
+        <mat-datepicker #pickerStart>
+        </mat-datepicker>
+      </mat-form-field>
+    </div>
+
+    <div class="element-wrapper mb-2">
+      <mat-label>End date:</mat-label>
+      <mat-form-field appearance="fill">
+        <mat-label>Choose a date</mat-label>
+        <input matInput
+               [(ngModel)]="endDate"
+               [matDatepicker]="pickerEnd">
+        <mat-datepicker-toggle matSuffix
+                               [for]="pickerEnd">
+        </mat-datepicker-toggle>
+        <mat-datepicker #pickerEnd>
+        </mat-datepicker>
+      </mat-form-field>
+    </div>
+
+    <button class="btn mt-3 btn-primary btn-block"
+            (click)="createTournament()"
+            [disabled]="isSubmitDisabled()">
+      <span *ngIf="!submitting">Submit</span>
+      <span *ngIf="submitting"
+            class="fa fa-spin fa-duotone fa-spinner">
+      </span>
+    </button>
+  </div>
+</div>

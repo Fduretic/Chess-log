@@ -1,0 +1,66 @@
+<div *ngIf="user">
+  <div class="my-profile-header flex-center column">
+    <div class="flex-center" *ngIf="changingPhoto">
+      <i class="fa fa-duotone fa-spinner fa-spin"></i>
+    </div>
+    <img class="profile-picture"
+         *ngIf="!changingPhoto"
+         (click)="changeProfilePhoto()"
+         [ngStyle]="{
+      background: user.photoURL ? 'url(' + user.photoURL + ') no-repeat center' : ''
+    }">
+    <h3 class="mt-2">{{user.displayName}}</h3>
+  </div>
+  <div class="my-profile-body my-4">
+    <p>
+      <span class="font-weight-bold mr-2">e-mail:</span>
+      <span>{{user.email}}</span>
+    </p>
+    <p>
+      <span class="font-weight-bold mr-2">total games:</span>
+      <span>{{resultsPreview.total}}</span>
+    </p>
+    <p>
+      <span class="font-weight-bold mr-2">won:</span>
+      <span class="text-success">{{resultsPreview.won}}</span>
+    </p>
+    <p>
+      <span class="font-weight-bold mr-2">stalemate:</span>
+      <span class="text-info">{{resultsPreview.stalemate}}</span>
+    </p>
+    <p>
+      <span class="font-weight-bold mr-2">lost:</span>
+      <span class="text-danger">{{resultsPreview.lost}}</span>
+    </p>
+  </div>
+
+  <div class="my-profile-footer">
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text"
+              (click)="toggleDisplayPassword()"
+              id="new-password">
+          <i class="fa fa-solid"
+             [ngClass]="{'fa-eye': !passwordChange.displayPassword,
+             'fa-eye-slash': passwordChange.displayPassword}">
+        </i>
+        </span>
+      </div>
+      <input [type]="passwordChange.displayPassword ? 'text' : 'password'"
+             [(ngModel)]="passwordChange.newPassword"
+             class="form-control bg-dark text-light"
+             placeholder="New Password"
+             aria-label="New Password"
+             aria-describedby="basic-addon1">
+    </div>
+
+    <button class="btn btn-outline-info"
+            (click)="changePassword()"
+            [disabled]="!passwordChange.newPassword?.length">
+      <span *ngIf="!changingPassword">Change Password</span>
+      <i *ngIf="changingPassword"
+         class="fa fa-duotone fa-spinner fa-spin">
+      </i>
+    </button>
+  </div>
+</div>

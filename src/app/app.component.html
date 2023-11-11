@@ -1,0 +1,36 @@
+<div class="app-wrapper">
+  <div class="content" *ngIf="!loadingUserState">
+    <router-outlet></router-outlet>
+  </div>
+
+  <div class="content
+    flex-center" *ngIf="loadingUserState">
+    <i class="
+    w-100h-100
+    fa fa-spin
+    fa-duotone
+    fa-spinner">
+    </i>
+  </div>
+
+  <div class="nav-footer" *ngIf="user">
+    <div class="container full-size">
+      <div class="d-flex full-size">
+        <div routerLink="/home"
+             routerLinkActive="active-shortcut"
+             class="footer-action flex-center display-5">
+          <i class="fa fa-home"></i>
+        </div>
+        <div routerLink="/my-profile"
+             routerLinkActive="active-shortcut"
+             class="footer-action flex-center display-5">
+          <i class="fa fa-user"></i>
+        </div>
+        <div (click)="logOut()"
+             class="footer-action flex-center display-5">
+          <i class="fa fa-solid fa-power-off"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

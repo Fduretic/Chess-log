@@ -1,0 +1,118 @@
+<div class="game-card">
+  <div class="participant-1">
+    <img class="profile-picture mr-2"
+         [ngStyle]="{background: game.participant1.photoURL ? 'url(' + game.participant1.photoURL + ') no-repeat center' : ''}">
+    <div class="player-indicator flex-center column">
+      <div class="status-icon">
+        <mat-icon class="text-success" *ngIf="game.result === 1">check_circle</mat-icon>
+        <mat-icon class="text-info" *ngIf="game.result === 0">brightness_1</mat-icon>
+        <mat-icon class="text-danger" *ngIf="game.result === 2">remove_circle</mat-icon>
+      </div>
+      <span class="player-name">{{game.participant1.displayName}}</span>
+      <div class="player-color"></div>
+    </div>
+  </div>
+  <div class="versus mx-3 flex-center">
+    <span>VS</span>
+  </div>
+  <div class="participant-2">
+    <div class="player-indicator flex-center column mr-2">
+      <div class="status-icon">
+        <mat-icon class="text-success" *ngIf="game.result === 2">check_circle</mat-icon>
+        <mat-icon class="text-info" *ngIf="game.result === 0">brightness_1</mat-icon>
+        <mat-icon class="text-danger" *ngIf="game.result === 1">remove_circle</mat-icon>
+      </div>
+      <span class="player-name">{{game.participant2.displayName}}</span>
+      <div class="player-color"></div>
+    </div>
+    <img class="profile-picture"
+         [ngStyle]="{
+      background: game.participant2.photoURL ? 'url(' + game.participant2.photoURL + ') no-repeat center' : ''}">
+  </div>
+</div>
+
+<div class="details" *ngIf="displayDetails">
+  <p (click)="toggleFavorite()">
+    <mat-icon class="text-warning">{{isFavorite ? 'star' : 'star_border'}}</mat-icon>
+  </p>
+  <p>
+    <span class="font-weight-bold">Played on:</span>
+    <span class="ml-2">{{game.dateTimePlayed | date: 'dd.MM.yyyy.'}}</span>
+  </p>
+  <p>
+    <span class="font-weight-bold">Created on:</span>
+    <span class="ml-2">{{game.dateTimeCreated | date: 'dd.MM.yyyy. HH:mm:ss'}}</span>
+  </p>
+  <p>
+    <span class="font-weight-bold">Created by:</span>
+    <span class="ml-2">{{game.authorName}}</span>
+  </p>
+  <p *ngIf="game.note">
+    <span class="font-weight-bold">Note:</span>
+    <span class="ml-2">{{game.note}}</span>
+  </p>
+  <div class="comments-wrapper">
+    <div class="comments-header">
+      <span class="comments-icon fa fa-solid fa-comments"></span>
+      <span class="mx-2">Comments</span>
+      <span>{{'(' + game.comments.length + ')'}}</span>
+    </div>
+    <div class="comments-body my-3">
+      <div class="element-wrapper">
+        <form class="example-form">
+          <mat-form-field class="example-full-width">
+            <mat-label>New Comment:</mat-label>
+            <input matInput
+                   value=""
+                   autocomplete="off"
+                   name="newComment.content"
+                   [(ngModel)]="newComment.content">
+          </mat-form-field>
+          <mat-icon (click)="addPhoto()"
+                    class="ml-2"
+                    *ngIf="!newComment.imageUrl && !submittingPhoto">add_a_photo
+          </mat-icon>
+          <div *ngIf="newComment.imageUrl && !submittingPhoto">
+            <mat-icon class="ml-2">photo
+            </mat-icon>
+            <mat-icon (click)="removePhoto()">delete_forever
+            </mat-icon>
+          </div>
+          <span *ngIf="submittingPhoto">
+          <i class="fa fa-duotone fa-spinner fa-spin"></i>
+        </span>
+        </form>
+      </div>
+
+      <button class="btn ml-2 mt-3 btn-primary btn-block"
+              [disabled]="submittingPhoto || submittingComment || (!newComment.content && !newComment.imageUrl)"
+              (click)="submitComment()">
+        <span *ngIf="!submittingComment">Comment</span>
+        <span *ngIf="submittingComment">
+          <i class="fa fa-duotone fa-spinner fa-spin"></i>
+        </span>
+      </button>
+    </div>
+    <div class="comments-footer">
+      <div class="comment-wrapper p-2 mb-2"
+           *ngFor="let comment of game.comments">
+        <div class="comment-header">
+          <img class="profile-picture"
+               [ngStyle]="{background: 'url(' + comment.creator.photoURL + ') no-repeat center'}">
+          <span class="ml-2">{{comment.creator.displayName}}</span>
+        </div>
+        <div class="comment-body my-2">
+          <span>{{comment.content}}</span>
+          <a [href]="comment.imageUrl" target="_blank">
+            <img class="my-2 comment-image"
+                 *ngIf="comment.imageUrl"
+                 [src]="comment.imageUrl">
+          </a>
+        </div>
+        <div class="comment-footer text-muted">
+          <span>{{comment.dateTimeCreated | date: 'dd.MM.yyyy. HH:mm:ss'}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

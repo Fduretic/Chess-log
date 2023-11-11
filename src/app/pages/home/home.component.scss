@@ -1,0 +1,21 @@
+.buttons {
+  height: 100%;
+  width: 100%;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, 1fr);
+
+  .button {
+    line-height: 2rem;
+    font-size: 25px;
+    flex-direction: column;
+    border: 1px solid white;
+    border-radius: 7px;
+    background-color: #00000029;
+
+    .button-label {
+      margin: 1rem 0;
+      padding: 4px;
+    }
+  }
+}

@@ -1,0 +1,82 @@
+<div class="auth-wrapper">
+  <ul class="nav nav-tabs mb-3">
+    <li class="nav-item"
+        (click)="setAuthType('login')">
+      <a class="nav-link"
+         [ngClass]="{'btn-primary': authType === 'login'}"
+         aria-current="page">Login</a>
+    </li>
+    <li class="nav-item"
+        (click)="setAuthType('register')">
+      <a class="nav-link"
+         [ngClass]="{'btn-primary': authType === 'register'}"
+         aria-current="page">Register</a>
+    </li>
+  </ul>
+
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+    <span class="input-group-text"
+          id="Username">
+      <i class="fa fa-solid fa-envelope"></i>
+    </span>
+    </div>
+    <input type="email"
+           id="e-mail-input"
+           (click)="selectInput('e-mail-input')"
+           [(ngModel)]="email"
+           class="form-control bg-dark text-light"
+           placeholder="e-mail"
+           aria-label="e-mail"
+           aria-describedby="basic-addon1">
+  </div>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend" (click)="togglePasswordDisplay()">
+      <span class="input-group-text" id="password">
+        <i class="fa fa-solid"
+           [ngClass]="{'fa-eye': !password.displayPassword, 'fa-eye-slash': password.displayPassword}">
+        </i>
+      </span>
+    </div>
+    <input
+      id="password-input"
+      (click)="selectInput('password-input')"
+      [(ngModel)]="password.newPassword"
+      [type]="password.displayPassword ? 'text' : 'password'"
+      class="form-control bg-dark text-light"
+      placeholder="password"
+      aria-label="password"
+      aria-describedby="basic-addon1">
+  </div>
+  <div class="input-group mb-3" *ngIf="authType === 'register'">
+    <div class="input-group-prepend">
+      <span class="input-group-text" id="displayName">
+        <i class="fa fa-solid fa-address-book"></i>
+      </span>
+    </div>
+    <input
+      [(ngModel)]="displayName"
+      id="nickname-input"
+      (click)="selectInput('nickname-input')"
+      class="form-control bg-dark text-light"
+      placeholder="nickname"
+      aria-label="nickname"
+      type="text"
+      aria-describedby="basic-addon1">
+  </div>
+
+  <button type="button"
+          [disabled]="!email || !password || (authType === 'register' && !displayName)"
+          (click)="submit()"
+          class="btn btn-primary btn-block">
+    <span *ngIf="!submitting">Submit</span>
+
+    <span *ngIf="submitting"
+          class="
+    fa fa-spin
+    fa-duotone
+    fa-spinner">
+    </span>
+  </button>
+</div>
+

@@ -1,0 +1,22 @@
+-Zajednička komponenta tab switcher (prima listu labela i naslov) Za primjer games.component.ts
+
+-Statični headeri u komponentama. Za primjer games.component.html.
+ Kako se ne bi scrollala cijela stranica već samo sadržaj, a header ostaje.
+
+-New Game i Previous Games spojiti u jednu komponentu kao što su npr. turniri.
+
+-Refactor Firebase/AngularFireStore. Prebaciti sve na AngularFireStore
+
+-Dodavanje igrača na turnir? (Ili svi sudjeluju automatski)
+
+-Pronaći sretnije rješenje za inicijalno dohvaćanje podataka. Zajednički servis?
+
+-Komentare odvojiti kao zasebnu komponentu. Inputi koji će dati upute za koji turnir/koju igru je komentar.
+
+-Dropdowne i što više stvari moguće prebaciti sa Bootstrapa na Angular Material. Iskoristiti što veći potencijal Angular materiala.
+
+-Refactor metoda koje se pozivaju u servis a vrlo vjerojatno bi se trebale hendlati u komponentama.
+
+-Promijeniti crvenu boju angular material elementata
+
+-Uploadove slika u zajednički servis (search u projektu: this.storage.upload )

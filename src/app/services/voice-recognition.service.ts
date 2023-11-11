@@ -28,7 +28,7 @@ export class VoiceRecognitionService {
   init() {
     this.recognition.continuous = true;
     this.recognition.interimResults = true;
-    this.recognition.lang = 'en-US';
+    this.recognition.lang = 'hr-HR';
 
     this.recognition.addEventListener('result', (e: any) => {
       this.transcript_arr.next(null);
